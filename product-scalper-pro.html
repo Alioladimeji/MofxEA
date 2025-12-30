@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scalper Pro EA - MOFx EAs</title>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0A4D68;
+            --primary-light: #088395;
+            --accent: #05BFDB;
+            --dark: #1A1A2E;
+            --text: #2C3E50;
+            --text-light: #5A6C7D;
+            --bg: #FAFBFC;
+            --card-bg: #FFFFFF;
+            --border: #E5E9F0;
+            --success: #27AE60;
+            --shadow: rgba(10, 77, 104, 0.08);
+            --shadow-lg: rgba(10, 77, 104, 0.12);
+        }
+
+        body {
+            font-family: 'Archivo', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* Header (same as main page) */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            box-shadow: 0 2px 20px var(--shadow);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+        }
+
+        .logo {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2rem;
+            font-weight: 400;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .back-button {
+            padding: 0.75rem 1.5rem;
+            background: var(--primary);
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+        }
+
+        /* Product Section */
+        .product-hero {
+            margin-top: 80px;
+            padding: 4rem 2rem;
+        }
+
+        .product-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        /* Gallery */
+        .product-gallery {
+            position: sticky;
+            top: 100px;
+        }
+
+        .gallery-main {
+            width: 100%;
+            height: 450px;
+            background: linear-gradient(135deg, #F0F4F8 0%, #E5E9F0 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            color: var(--text-light);
+            font-weight: 600;
+            font-size: 1.1rem;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .gallery-main:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 30px var(--shadow);
+        }
+
+        .gallery-thumbs {
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            padding: 0.5rem 0;
+        }
+
+        .gallery-thumb {
+            min-width: 100px;
+            height: 100px;
+            background: #E5E9F0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .gallery-thumb:hover {
+            border-color: var(--primary-light);
+        }
+
+        .gallery-thumb.active {
+            border-color: var(--primary);
+            background: #D8E2E8;
+        }
+
+        /* Product Details */
+        .product-details h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 3rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            font-weight: 400;
+        }
+
+        .product-price {
+            font-size: 2.5rem;
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+        }
+
+        .product-price span {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .product-description {
+            color: var(--text);
+            line-height: 1.9;
+            margin-bottom: 2.5rem;
+            font-size: 1.1rem;
+        }
+
+        .product-features {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .product-features h3 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .product-features ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .product-features li {
+            padding: 0.75rem 0;
+            color: var(--text);
+            position: relative;
+            padding-left: 2rem;
+            line-height: 1.7;
+        }
+
+        .product-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--success);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .strategy-section {
+            background: linear-gradient(135deg, var(--bg) 0%, #F0F4F8 100%);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .strategy-section h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .strategy-section p {
+            color: var(--text);
+            line-height: 1.8;
+        }
+
+        /* Order Options */
+        .order-section {
+            background: var(--card-bg);
+            border: 2px solid var(--primary);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .order-section h3 {
+            color: var(--dark);
+            margin-bottom: 1.5rem;
+            font-size: 1.75rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .order-options {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .order-button {
+            padding: 1.25rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            font-size: 1.05rem;
+        }
+
+        .order-button.primary {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .order-button.secondary {
+            background: transparent;
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .order-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px var(--shadow-lg);
+        }
+
+        .order-button.primary:hover {
+            background: var(--primary-light);
+            border-color: var(--primary-light);
+        }
+
+        .order-button.secondary:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .payment-info {
+            margin-top: 1.5rem;
+            padding: 1.25rem;
+            background: var(--bg);
+            border-radius: 8px;
+            text-align: center;
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        .payment-info strong {
+            color: var(--primary);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Specifications */
+        .specs-section {
+            margin-top: 3rem;
+            padding: 2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+
+        .specs-section h3 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .specs-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .spec-item {
+            padding: 1rem;
+            background: var(--bg);
+            border-radius: 8px;
+        }
+
+        .spec-label {
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.25rem;
+            font-size: 0.95rem;
+        }
+
+        .spec-value {
+            color: var(--text-light);
+        }
+
+        /* Risk Warning */
+        .risk-warning {
+            background: #FFF3CD;
+            border: 1px solid #FFE69C;
+            color: #856404;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+            line-height: 1.8;
+        }
+
+        .risk-warning strong {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #664D03;
+            font-size: 1.1rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .footer p {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .product-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .product-gallery {
+                position: static;
+            }
+
+            .specs-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .product-details h1 {
+                font-size: 2.5rem;
+            }
+
+            .product-price {
+                font-size: 2rem;
+            }
+
+            .order-section {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <a href="mofx-eas.html" class="logo">MOFx EAs</a>
+            <a href="mofx-eas.html#products" class="back-button">← Back to Products</a>
+        </div>
+    </header>
+
+    <!-- Product Hero -->
+    <section class="product-hero">
+        <div class="product-container">
+            <!-- Gallery -->
+            <div class="product-gallery">
+                <div class="gallery-main" id="mainImage">
+                    Scalper Pro EA - Main View
+                </div>
+                <div class="gallery-thumbs">
+                    <div class="gallery-thumb active" data-index="0">View 1</div>
+                    <div class="gallery-thumb" data-index="1">Settings</div>
+                    <div class="gallery-thumb" data-index="2">Chart</div>
+                    <div class="gallery-thumb" data-index="3">Results</div>
+                    <div class="gallery-thumb" data-index="4">Stats</div>
+                </div>
+            </div>
+
+            <!-- Details -->
+            <div class="product-details">
+                <h1>Scalper Pro EA</h1>
+                <div class="product-price">
+                    $299 <span>USD</span>
+                </div>
+
+                <div class="product-description">
+                    <p>The Scalper Pro EA is a sophisticated high-frequency trading system engineered for traders seeking consistent short-term profits. Utilizing advanced price action algorithms and real-time market analysis, this EA executes rapid trades on major currency pairs with exceptional precision.</p>
+                    
+                    <p>Designed for optimal performance in high-liquidity markets, Scalper Pro features intelligent entry and exit logic, dynamic spread filtering, and adaptive stop-loss management to protect your capital while maximizing profit opportunities.</p>
+                </div>
+
+                <div class="product-features">
+                    <h3>Key Features</h3>
+                    <ul>
+                        <li>Advanced price action scalping algorithm optimized for M1-M15 timeframes</li>
+                        <li>Intelligent spread filter prevents trading during unfavorable conditions</li>
+                        <li>Dynamic stop-loss and take-profit adjustment based on volatility</li>
+                        <li>Multi-timeframe analysis for higher-probability trade entries</li>
+                        <li>Configurable risk management with percentage-based position sizing</li>
+                        <li>Built-in trailing stop feature to lock in profits on winning trades</li>
+                        <li>News filter option to avoid trading during high-impact events</li>
+                        <li>Low latency execution optimized for ECN/STP brokers</li>
+                        <li>Compatible with MetaTrader 4 and MetaTrader 5</li>
+                        <li>Comprehensive user manual and setup guide included</li>
+                        <li>Free lifetime updates and bug fixes</li>
+                        <li>Dedicated WhatsApp and Telegram support</li>
+                    </ul>
+                </div>
+
+                <div class="strategy-section">
+                    <h3>Trading Strategy</h3>
+                    <p>Scalper Pro employs a momentum-based scalping strategy that identifies micro-trends and price inefficiencies in the market. The EA analyzes multiple technical indicators including moving averages, RSI, and volatility metrics to determine optimal entry points. Each trade is protected by carefully calculated stop-loss levels while take-profit targets are dynamically adjusted based on current market conditions. The system is designed to take multiple small wins throughout the trading session, accumulating profits while maintaining strict risk control.</p>
+                </div>
+
+                <div class="specs-section">
+                    <h3>Technical Specifications</h3>
+                    <div class="specs-grid">
+                        <div class="spec-item">
+                            <div class="spec-label">Platform</div>
+                            <div class="spec-value">MetaTrader 4 & 5</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label">Recommended Pairs</div>
+                            <div class="spec-value">EURUSD, GBPUSD, USDJPY, GOLD</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label">Timeframe</div>
+                            <div class="spec-value">M1, M5, M15</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label">Minimum Deposit</div>
+                            <div class="spec-value">$500 recommended</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label">Account Type</div>
+                            <div class="spec-value">ECN, STP, Standard</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label">VPS Required</div>
+                            <div class="spec-value">Highly Recommended</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Section -->
+                <div class="order-section">
+                    <h3>Order Scalper Pro EA</h3>
+                    <div class="order-options">
+                        <a href="https://t.me/Alioladimeji" class="order-button primary">
+                            <span>💬</span>
+                            <span>Order via Telegram</span>
+                        </a>
+                        <a href="#paystack-checkout" class="order-button secondary" onclick="alert('Payment gateway integration - Redirecting to Paystack...')">
+                            <span>💳</span>
+                            <span>Pay with Credit/Debit Card</span>
+                        </a>
+                    </div>
+                    <div class="payment-info">
+                        <strong>Secure Payment Options</strong>
+                        Choose Telegram for direct communication and personalized setup assistance, or pay instantly with your credit/debit card via Paystack's secure payment gateway.
+                    </div>
+                </div>
+
+                <div class="risk-warning">
+                    <strong>⚠️ Important Risk Disclosure</strong>
+                    Trading forex and CFDs involves substantial risk of loss and may not be suitable for all investors. Past performance shown is not indicative of future results. You should carefully consider your investment objectives, level of experience, and risk appetite. The high degree of leverage can work against you as well as for you. Never invest money you cannot afford to lose. Seek independent financial advice if necessary.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 MOFx EAs. All rights reserved.</p>
+        <p style="margin-top: 0.5rem;">Contact: WhatsApp +234 816 044 6105 | Email: aliakinfenwa@gmail.com</p>
+    </footer>
+
+    <script>
+        // Gallery functionality
+        const mainImage = document.getElementById('mainImage');
+        const thumbs = document.querySelectorAll('.gallery-thumb');
+        const imageTexts = [
+            'Scalper Pro EA - Main View',
+            'Settings Panel',
+            'Chart Analysis',
+            'Live Results',
+            'Performance Statistics'
+        ];
+
+        thumbs.forEach((thumb, index) => {
+            thumb.addEventListener('click', () => {
+                // Remove active class from all thumbs
+                thumbs.forEach(t => t.classList.remove('active'));
+                // Add active class to clicked thumb
+                thumb.classList.add('active');
+                // Update main image
+                mainImage.textContent = imageTexts[index];
+            });
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const href = this.getAttribute('href');
+                if (href !== '#') {
+                    const target = document.querySelector(href);
+                    if (target) {
+                        window.scrollTo({
+                            top: target.offsetTop - 100,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

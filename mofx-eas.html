@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOFx EAs - Professional Automated Trading Solutions</title>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0A4D68;
+            --primary-light: #088395;
+            --accent: #05BFDB;
+            --dark: #1A1A2E;
+            --text: #2C3E50;
+            --text-light: #5A6C7D;
+            --bg: #FAFBFC;
+            --card-bg: #FFFFFF;
+            --border: #E5E9F0;
+            --success: #27AE60;
+            --shadow: rgba(10, 77, 104, 0.08);
+            --shadow-lg: rgba(10, 77, 104, 0.12);
+        }
+
+        body {
+            font-family: 'Archivo', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .header.scrolled {
+            box-shadow: 0 2px 20px var(--shadow);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+        }
+
+        .logo {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2rem;
+            font-weight: 400;
+            color: var(--primary);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-menu a:hover {
+            color: var(--primary);
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        .cta-button {
+            background: var(--primary);
+            color: white !important;
+            padding: 0.75rem 1.75rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid var(--primary);
+        }
+
+        .cta-button:hover {
+            background: var(--primary-light);
+            border-color: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px var(--shadow-lg);
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+        }
+
+        .mobile-menu-toggle span {
+            width: 28px;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .hero {
+            margin-top: 80px;
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #F0F4F8 0%, #FFFFFF 100%);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 60%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%230A4D68;stop-opacity:0.05" /><stop offset="100%" style="stop-color:%2305BFDB;stop-opacity:0.08" /></linearGradient></defs><rect width="1200" height="800" fill="url(%23grad1)"/><circle cx="900" cy="300" r="200" fill="%23088395" opacity="0.03"/><circle cx="1000" cy="500" r="150" fill="%2305BFDB" opacity="0.04"/><path d="M 800 200 L 1000 300 L 900 500 L 700 400 Z" fill="%230A4D68" opacity="0.02"/></svg>') no-repeat center right;
+            background-size: contain;
+            opacity: 0.6;
+            z-index: 0;
+        }
+
+        .hero-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 4rem;
+            line-height: 1.1;
+            color: var(--dark);
+            margin-bottom: 1.5rem;
+            font-weight: 400;
+        }
+
+        .hero-content h1 span {
+            color: var(--primary);
+            font-style: italic;
+        }
+
+        .hero-content p {
+            font-size: 1.25rem;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            line-height: 1.7;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .hero-cta .cta-button {
+            font-size: 1.1rem;
+            padding: 1rem 2.5rem;
+        }
+
+        .hero-image {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-image-placeholder {
+            width: 100%;
+            max-width: 500px;
+            height: 500px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 20px 60px var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(10, 77, 104, 0.05) 0%, rgba(5, 191, 219, 0.05) 100%);
+        }
+
+        .hero-image-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 20px;
+        }
+
+        .hero-image-placeholder::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(10, 77, 104, 0.1) 0%, rgba(5, 191, 219, 0.1) 100%);
+            pointer-events: none;
+        }
+
+        .ticker-wrapper {
+            background: var(--card-bg);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        section {
+            padding: 6rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 3rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            font-weight: 400;
+        }
+
+        .section-header p {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .ea-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .ea-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2.5rem;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ea-card-image {
+            width: 100%;
+            height: 180px;
+            background: linear-gradient(135deg, #E5E9F0 0%, #D1D9E0 100%);
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .ea-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .ea-icon {
+            font-size: 4rem;
+            opacity: 0.7;
+        }
+
+        .ea-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .ea-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px var(--shadow-lg);
+        }
+
+        .ea-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .ea-card h3 {
+            font-size: 1.75rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .ea-card p {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .ea-card-button {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .ea-card-button:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .result-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .result-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px var(--shadow);
+        }
+
+        .result-image {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(135deg, #F0F4F8 0%, #E5E9F0 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .result-content {
+            padding: 1.5rem;
+        }
+
+        .result-content h4 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .result-content p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        .broker-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .broker-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .broker-card:hover {
+            box-shadow: 0 8px 30px var(--shadow);
+            transform: translateY(-4px);
+        }
+
+        .broker-logo {
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .broker-logo img {
+            max-width: 100%;
+            max-height: 60px;
+            object-fit: contain;
+        }
+
+        .broker-button {
+            display: inline-block;
+            padding: 0.75rem 2rem;
+            background: var(--primary);
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .broker-button:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+        }
+
+        .vps-container {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            border-radius: 20px;
+            padding: 4rem;
+            text-align: center;
+        }
+
+        .vps-container h3 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 400;
+        }
+
+        .vps-features {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .vps-feature {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .vps-feature-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .vps-button {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: white;
+            color: var(--primary);
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .vps-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .tutorial-categories {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .tutorial-category {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+        }
+
+        .tutorial-category h3 {
+            font-size: 1.75rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .tutorial-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .tutorial-item {
+            padding: 1rem;
+            background: var(--bg);
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .tutorial-item:hover {
+            background: #F0F4F8;
+        }
+
+        .tutorial-item.locked {
+            opacity: 0.6;
+            position: relative;
+        }
+
+        .tutorial-item.locked::after {
+            content: '🔒';
+            position: absolute;
+            right: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .upgrade-banner {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .upgrade-banner h4 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .faq-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-question {
+            padding: 1.5rem 2rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: var(--primary);
+            user-select: none;
+        }
+
+        .faq-question:hover {
+            background: var(--bg);
+        }
+
+        .faq-answer {
+            padding: 0 2rem 1.5rem;
+            color: var(--text-light);
+            line-height: 1.8;
+            display: none;
+        }
+
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+
+        .faq-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .contact-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .contact-card:hover {
+            box-shadow: 0 8px 30px var(--shadow);
+            transform: translateY(-4px);
+        }
+
+        .contact-icon {
+            width: 70px;
+            height: 70px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: white;
+            font-size: 1.8rem;
+            border: 3px solid var(--border);
+        }
+
+        .contact-icon img {
+            max-width: 45px;
+            max-height: 45px;
+            object-fit: contain;
+        }
+
+        .contact-card h4 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        .contact-card a {
+            color: var(--primary-light);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .contact-card a:hover {
+            text-decoration: underline;
+        }
+
+        .footer {
+            background: var(--dark);
+            color: white;
+            padding: 4rem 2rem 2rem;
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-brand h3 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-weight: 400;
+        }
+
+        .footer-brand p {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.8;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        .footer-bottom {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .disclaimer {
+            background: #FFF3CD;
+            border: 1px solid #FFE69C;
+            color: #856404;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+            line-height: 1.8;
+        }
+
+        .disclaimer strong {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #664D03;
+        }
+
+        @media (max-width: 1024px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .mobile-menu-toggle {
+                display: flex;
+            }
+
+            .hero-container {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-content h1 {
+                font-size: 3rem;
+            }
+
+            .tutorial-categories {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .section-header h2 {
+                font-size: 2.5rem;
+            }
+
+            .ea-grid,
+            .results-grid,
+            .broker-grid,
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .vps-container {
+                padding: 2rem;
+            }
+
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.6s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <header class="header" id="header">
+        <div class="nav-container">
+            <a href="#home" class="logo">MOFx EAs</a>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#products">Products</a></li>
+                    <li><a href="tutorials.html">Tutorials & Mentorship</a></li>
+                    <li><a href="#results">Results</a></li>
+                    <li><a href="#brokers">Brokers & VPS</a></li>
+                    <li><a href="#faq">FAQs</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="login.html">Login</a></li>
+                    <li><a href="#products" class="cta-button">Order Now</a></li>
+                </ul>
+            </nav>
+            <div class="mobile-menu-toggle" id="mobileToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero" id="home">
+        <div class="hero-container">
+            <div class="hero-content fade-in">
+                <h1>Automated Trading, <span>Simplified</span></h1>
+                <p>MOFx EAs deliver professional-grade automated trading solutions designed for consistency, precision, and intelligent risk management. Trade 24/7 with confidence.</p>
+                <div class="hero-cta">
+                    <a href="#products" class="cta-button">Get Started</a>
+                </div>
+            </div>
+            <div class="hero-image fade-in">
+                <div class="hero-image-placeholder">
+                    <img src="lastImage-82.jpg" alt="MOFx EAs - Automated Trading Robot">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="ticker-wrapper">
+        <script type="module" src="https://widgets.tradingview-widget.com/w/en/tv-ticker-tape.js"></script>
+        <tv-ticker-tape symbols='FOREXCOM:SPXUSD,BITSTAMP:BTCUSD,BITSTAMP:ETHUSD,OANDA:XAUUSD,CAPITALCOM:US100,FX:EURUSD,FX:GBPUSD,FX:USDJPY'></tv-ticker-tape>
+    </div>
+
+    <section id="products">
+        <div class="section-header">
+            <h2>Our Expert Advisors</h2>
+            <p>Professional automated trading solutions built for various market conditions and trading styles</p>
+        </div>
+        <div class="ea-grid">
+            <div class="ea-card fade-in">
+                <div class="ea-card-image">
+                    <span class="ea-icon">⚡</span>
+                </div>
+                <h3>Scalper Pro EA</h3>
+                <p>High-frequency trading system designed for quick market entries and exits. Optimized for low-latency execution on major currency pairs with advanced risk controls.</p>
+                <a href="product-scalper-pro.html" class="ea-card-button">View Details</a>
+            </div>
+            <div class="ea-card fade-in">
+                <div class="ea-card-image">
+                    <span class="ea-icon">📈</span>
+                </div>
+                <h3>Trend Master EA</h3>
+                <p>Intelligent trend-following algorithm that identifies and capitalizes on strong market movements. Features dynamic position sizing and adaptive stop-loss management.</p>
+                <a href="#product-trend" class="ea-card-button">View Details</a>
+            </div>
+            <div class="ea-card fade-in">
+                <div class="ea-card-image">
+                    <span class="ea-icon">🔷</span>
+                </div>
+                <h3>Grid Trader EA</h3>
+                <p>Advanced grid trading system with smart recovery mechanisms. Designed for ranging markets with configurable grid spacing and profit targets.</p>
+                <a href="#product-grid" class="ea-card-button">View Details</a>
+            </div>
+            <div class="ea-card fade-in">
+                <div class="ea-card-image">
+                    <span class="ea-icon">📰</span>
+                </div>
+                <h3>News Trader EA</h3>
+                <p>Specialized EA for trading major economic news releases. Features pre-news positioning, volatility filters, and rapid execution capabilities.</p>
+                <a href="#product-news" class="ea-card-button">View Details</a>
+            </div>
+            <div class="ea-card fade-in">
+                <div class="ea-card-image">
+                    <span class="ea-icon">🌐</span>
+                </div>
+                <h3>Multi-Pair EA</h3>
+                <p>Diversified trading across multiple currency pairs simultaneously. Includes correlation analysis and portfolio risk management features.</p>
+                <a href="#product-multipair" class="ea-card-button">View Details</a>
+            </div>
+            <div class="ea-card fade-in">
+                <div class="ea-card-image">
+                    <span class="ea-icon">🛡️</span>
+                </div>
+                <h3>Smart Hedge EA</h3>
+                <p>Sophisticated hedging system that protects your positions during adverse market conditions while maintaining profit potential.</p>
+                <a href="#product-hedge" class="ea-card-button">View Details</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="results" style="background: var(--bg);">
+        <div class="section-header">
+            <h2>Real Performance, Real Results</h2>
+            <p>Transparency is our priority. View actual trading results from our Expert Advisors</p>
+        </div>
+        <div class="results-grid">
+            <div class="result-card fade-in">
+                <div class="result-image">Trade Screenshot #1</div>
+                <div class="result-content">
+                    <h4>Scalper Pro EA</h4>
+                    <p>Consistent daily profits with controlled drawdown over 30-day period</p>
+                </div>
+            </div>
+            <div class="result-card fade-in">
+                <div class="result-image">Trade Screenshot #2</div>
+                <div class="result-content">
+                    <h4>Trend Master EA</h4>
+                    <p>Captured major trend movements with optimal entry and exit points</p>
+                </div>
+            </div>
+            <div class="result-card fade-in">
+                <div class="result-image">Trade Screenshot #3</div>
+                <div class="result-content">
+                    <h4>Grid Trader EA</h4>
+                    <p>Systematic profit accumulation during ranging market conditions</p>
+                </div>
+            </div>
+            <div class="result-card fade-in">
+                <div class="result-image">Trade Screenshot #4</div>
+                <div class="result-content">
+                    <h4>Multi-Pair EA</h4>
+                    <p>Diversified performance across multiple currency pairs</p>
+                </div>
+            </div>
+            <div class="result-card fade-in">
+                <div class="result-image">Trade Screenshot #5</div>
+                <div class="result-content">
+                    <h4>News Trader EA</h4>
+                    <p>Successful news event trading with rapid execution</p>
+                </div>
+            </div>
+            <div class="result-card fade-in">
+                <div class="result-image">Trade Screenshot #6</div>
+                <div class="result-content">
+                    <h4>Smart Hedge EA</h4>
+                    <p>Effective risk mitigation during volatile market periods</p>
+                </div>
+            </div>
+        </div>
+        <div class="disclaimer">
+            <strong>Risk Disclaimer:</strong>
+            Trading forex and CFDs carries a high level of risk and may not be suitable for all investors. Past performance is not indicative of future results. The screenshots shown represent actual trades but do not guarantee similar outcomes. You should carefully consider your investment objectives, level of experience, and risk appetite before trading.
+        </div>
+    </section>
+
+    <section id="brokers">
+        <div class="section-header">
+            <h2>Trusted Broker Partners</h2>
+            <p>We recommend these reputable brokers for optimal EA performance</p>
+        </div>
+        <div class="broker-grid">
+            <div class="broker-card fade-in">
+                <div class="broker-logo">
+                    <img src="Exness-Logo-Forex-Broker.webp" alt="Exness">
+                </div>
+                <p>Ultra-low spreads and instant execution</p>
+                <a href="https://one.exnesstrack.net/a/your-affiliate-id" class="broker-button">Sign Up</a>
+            </div>
+            <div class="broker-card fade-in">
+                <div class="broker-logo">
+                    <img src="vantage-full-logo-RGB.png" alt="Vantage">
+                </div>
+                <p>Multi-regulated with deep liquidity</p>
+                <a href="https://www.vantagemarkets.com/partners/your-id" class="broker-button">Sign Up</a>
+            </div>
+            <div class="broker-card fade-in">
+                <div class="broker-logo">
+                    <img src="ftmo-Logo-color-01.png" alt="FTMO">
+                </div>
+                <p>Prop trading with funded accounts</p>
+                <a href="https://ftmo.com/?affiliates=your-id" class="broker-button">Sign Up</a>
+            </div>
+            <div class="broker-card fade-in">
+                <div class="broker-logo">
+                    <img src="67c7d713cc5a7d2f9f1fc9dd_Open Graph (4).png" alt="BlueGuardian">
+                </div>
+                <p>Professional prop firm funding</p>
+                <a href="https://blueguardian.com/ref/your-id" class="broker-button">Sign Up</a>
+            </div>
+            <div class="broker-card fade-in">
+                <div class="broker-logo">
+                    <img src="tradingview-logo.png" alt="TradingView">
+                </div>
+                <p>Advanced charting and analysis tools</p>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="vps-container fade-in">
+            <h3>Reliable VPS Hosting for Your EAs</h3>
+            <p style="font-size: 1.1rem; margin-bottom: 2rem;">Ensure your Expert Advisors run 24/7 with professional VPS hosting</p>
+            <div class="vps-features">
+                <div class="vps-feature">
+                    <div class="vps-feature-icon">⚡</div>
+                    <strong>Ultra-Low Latency</strong>
+                    <span>Direct broker connectivity</span>
+                </div>
+                <div class="vps-feature">
+                    <div class="vps-feature-icon">🔒</div>
+                    <strong>99.9% Uptime</strong>
+                    <span>Never miss a trade</span>
+                </div>
+                <div class="vps-feature">
+                    <div class="vps-feature-icon">🌐</div>
+                    <strong>Global Servers</strong>
+                    <span>Optimal performance worldwide</span>
+                </div>
+            </div>
+            <a href="https://wa.me/2348160446105?text=I'm%20interested%20in%20VPS%20hosting" class="vps-button">Get VPS Recommendation</a>
+        </div>
+    </section>
+    <section id="faq">
+        <div class="section-header">
+            <h2>Frequently Asked Questions</h2>
+            <p>Everything you need to know about MOFx Expert Advisors</p>
+        </div>
+        <div class="faq-container">
+            <div class="faq-item fade-in">
+                <div class="faq-question">
+                    <span>What is an Expert Advisor (EA)?</span>
+                    <span class="faq-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    An Expert Advisor is an automated trading program that runs on MetaTrader platforms (MT4/MT5). It analyzes market conditions and executes trades based on predefined algorithms, allowing you to trade 24/7 without constant monitoring.
+                </div>
+            </div>
+            <div class="faq-item fade-in">
+                <div class="faq-question">
+                    <span>How do MOFx EAs work?</span>
+                    <span class="faq-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    MOFx EAs use advanced algorithms to identify trading opportunities based on technical indicators, price action, and market conditions. Each EA is designed for specific strategies and includes risk management features like stop-loss, take-profit, and position sizing controls.
+                </div>
+            </div>
+            <div class="faq-item fade-in">
+                <div class="faq-question">
+                    <span>Which brokers are compatible with MOFx EAs?</span>
+                    <span class="faq-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    Our EAs work with any broker that supports MetaTrader 4 or MetaTrader 5. We recommend our partner brokers (Exness, Vantage, FTMO, BlueGuardian) for optimal performance, low spreads, and reliable execution.
+                </div>
+            </div>
+            <div class="faq-item fade-in">
+                <div class="faq-question">
+                    <span>Do I need a VPS to run EAs?</span>
+                    <span class="faq-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    While not mandatory, a VPS (Virtual Private Server) is highly recommended for EA trading. It ensures 24/7 uptime, eliminates internet connectivity issues, provides low latency connection to broker servers, and prevents missed trades due to computer downtime.
+                </div>
+            </div>
+            <div class="faq-item fade-in">
+                <div class="faq-question">
+                    <span>What are the risks of automated trading?</span>
+                    <span class="faq-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    Automated trading carries the same risks as manual trading, including potential loss of capital. Market conditions can change rapidly, and past performance does not guarantee future results. Always start with proper risk management, use appropriate position sizing, and never risk more than you can afford to lose.
+                </div>
+            </div>
+            <div class="faq-item fade-in">
+                <div class="faq-question">
+                    <span>Do you provide support and updates?</span>
+                    <span class="faq-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    Yes, we provide comprehensive support via WhatsApp, Telegram, and email. All EAs include free updates to adapt to changing market conditions. Premium tutorial subscribers also receive priority support and personalized guidance.
+                </div>
+            </div>
+            <div class="faq-item fade-in">
+                <div class="faq-question">
+                    <span>Can I customize EA settings?</span>
+                    <span class="faq-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    Absolutely. All MOFx EAs come with adjustable parameters including lot size, risk percentage, take-profit levels, stop-loss settings, and trading hours. We provide detailed documentation and premium tutorials on optimal configuration.
+                </div>
+            </div>
+            <div class="faq-item fade-in">
+                <div class="faq-question">
+                    <span>How do I get started?</span>
+                    <span class="faq-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    Getting started is simple: choose your EA, complete payment via Telegram or credit card (Paystack), receive your EA files and installation guide, install on MT4/MT5, configure settings based on your risk tolerance, and start trading. We provide step-by-step guidance throughout the process.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" style="background: var(--bg);">
+        <div class="section-header">
+            <h2>Get In Touch</h2>
+            <p>We're here to help with any questions or support you need</p>
+        </div>
+        <div class="contact-grid">
+            <div class="contact-card fade-in">
+                <div class="contact-icon">
+                    <img src="logo-whatsapp-png-pic-0.png" alt="WhatsApp">
+                </div>
+                <h4>WhatsApp</h4>
+                <a href="https://wa.me/2348160446105">+234 816 044 6105</a>
+            </div>
+            <div class="contact-card fade-in">
+                <div class="contact-icon">
+                    <img src="Gmail_Logo_512px.png" alt="Email">
+                </div>
+                <h4>Email</h4>
+                <a href="/cdn-cgi/l/email-protection#78191411191311161e1d160f19381f15191114561b1715"><span class="__cf_email__" data-cfemail="3d5c51545c5654535b58534a5c7d5a505c5451135e5250">[email&#160;protected]</span></a>
+            </div>
+            <div class="contact-card fade-in">
+                <div class="contact-icon">
+                    <img src="Telegram_logo.svg.webp" alt="Telegram">
+                </div>
+                <h4>Telegram</h4>
+                <a href="https://t.me/Alioladimeji">@Alioladimeji</a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <h3>MOFx EAs</h3>
+                <p>Professional automated trading solutions designed for traders who value consistency, precision, and intelligent risk management.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#products">Products</a></li>
+                    <li><a href="#results">Results</a></li>
+                    <li><a href="#tutorials">Tutorials</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Support</h4>
+                <ul class="footer-links">
+                    <li><a href="#faq">FAQs</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#brokers">Brokers</a></li>
+                    <li><a href="https://wa.me/2348160446105">WhatsApp Support</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Connect</h4>
+                <ul class="footer-links">
+                    <li><a href="https://wa.me/2348160446105">WhatsApp</a></li>
+                    <li><a href="https://t.me/Alioladimeji">Telegram</a></li>
+                    <li><a href="/cdn-cgi/l/email-protection#f9989590989290979f9c978e98b99e94989095d79a9694">Email</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 MOFx EAs. All rights reserved.</p>
+            <p style="margin-top: 0.5rem; font-size: 0.9rem;">Risk Disclaimer: Trading forex and CFDs involves substantial risk of loss and is not suitable for all investors. Past performance is not indicative of future results.</p>
+        </div>
+    </footer>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const item = question.parentElement;
+                const isActive = item.classList.contains('active');
+                
+                document.querySelectorAll('.faq-item').forEach(faq => {
+                    faq.classList.remove('active');
+                });
+                
+                if (!isActive) {
+                    item.classList.add('active');
+                }
+            });
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && href.length > 1) {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        const headerHeight = 80;
+                        const targetPosition = target.offsetTop - headerHeight;
+                        window.scrollTo({
+                            top: targetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        });
+
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+            observer.observe(el);
+        });
+
+        document.getElementById('mobileToggle').addEventListener('click', () => {
+            const navMenu = document.querySelector('.nav-menu');
+            if (navMenu.style.display === 'flex') {
+                navMenu.style.display = 'none';
+            } else {
+                navMenu.style.display = 'flex';
+            }
+        });
+    </script>
+</body>
+</html>

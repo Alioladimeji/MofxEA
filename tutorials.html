@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorials & Mentorship - MOFx EAs</title>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0A4D68;
+            --primary-light: #088395;
+            --accent: #05BFDB;
+            --dark: #1A1A2E;
+            --text: #2C3E50;
+            --text-light: #5A6C7D;
+            --bg: #FAFBFC;
+            --card-bg: #FFFFFF;
+            --border: #E5E9F0;
+            --success: #27AE60;
+            --shadow: rgba(10, 77, 104, 0.08);
+            --shadow-lg: rgba(10, 77, 104, 0.12);
+        }
+
+        body {
+            font-family: 'Archivo', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            box-shadow: 0 2px 20px var(--shadow);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+        }
+
+        .logo {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2rem;
+            font-weight: 400;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .nav-button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid;
+        }
+
+        .nav-button.secondary {
+            background: transparent;
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .nav-button.primary {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .nav-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px var(--shadow-lg);
+        }
+
+        .nav-button.secondary:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .nav-button.primary:hover {
+            background: var(--primary-light);
+            border-color: var(--primary-light);
+        }
+
+        .tutorials-hero {
+            margin-top: 80px;
+            padding: 4rem 2rem 2rem;
+            background: linear-gradient(135deg, #F0F4F8 0%, #FFFFFF 100%);
+            text-align: center;
+        }
+
+        .tutorials-hero h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 3.5rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            font-weight: 400;
+        }
+
+        .tutorials-hero p {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+
+        .filter-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .filter-tab {
+            padding: 0.75rem 2rem;
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text);
+            transition: all 0.3s ease;
+        }
+
+        .filter-tab.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .filter-tab:hover {
+            border-color: var(--primary);
+        }
+
+        .tutorials-section {
+            padding: 4rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2.5rem;
+            color: var(--dark);
+            margin-bottom: 2rem;
+            font-weight: 400;
+        }
+
+        .videos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .video-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .video-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px var(--shadow);
+        }
+
+        .video-thumbnail {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #E5E9F0 0%, #D1D9E0 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .video-thumbnail::before {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .video-thumbnail::after {
+            content: '▶';
+            position: absolute;
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-left: 5px;
+        }
+
+        .video-duration {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .video-card.locked .video-thumbnail {
+            filter: blur(3px) brightness(0.7);
+        }
+
+        .lock-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 77, 104, 0.85);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .lock-icon {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .lock-text {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .video-content {
+            padding: 1.5rem;
+        }
+
+        .video-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .video-description {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .video-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .premium-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent), var(--primary-light));
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .upgrade-cta {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 3rem 2rem;
+            border-radius: 16px;
+            text-align: center;
+            margin: 4rem auto;
+            max-width: 800px;
+        }
+
+        .upgrade-cta h3 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 400;
+        }
+
+        .upgrade-cta p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .upgrade-button {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: white;
+            color: var(--primary);
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .upgrade-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .footer {
+            background: var(--dark);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .footer p {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        @media (max-width: 768px) {
+            .tutorials-hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .videos-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-tabs {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Payment Modal */
+        .payment-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .payment-modal.active {
+            display: flex;
+        }
+
+        .payment-modal-content {
+            background: white;
+            border-radius: 16px;
+            max-width: 500px;
+            width: 100%;
+            padding: 2.5rem;
+            position: relative;
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 35px;
+            height: 35px;
+            background: var(--bg);
+            border: none;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: var(--border);
+            transform: rotate(90deg);
+        }
+
+        .modal-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            font-weight: 400;
+        }
+
+        .modal-subtitle {
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            line-height: 1.7;
+        }
+
+        .payment-options {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .payment-option {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--text);
+        }
+
+        .payment-option:hover {
+            border-color: var(--primary);
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px var(--shadow-lg);
+        }
+
+        .payment-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .payment-details h4 {
+            color: var(--dark);
+            font-size: 1.2rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .payment-details p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="nav-container">
+            <a href="mofx-eas.html" class="logo">MOFx EAs</a>
+            <div class="nav-actions">
+                <a href="login.html" class="nav-button secondary">Login</a>
+                <a href="mofx-eas.html" class="nav-button primary">← Back to Home</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="tutorials-hero">
+        <h1>Tutorials & Mentorship</h1>
+        <p>Master automated trading with our comprehensive video library. From beginner basics to advanced strategies.</p>
+        
+        <div class="filter-tabs">
+            <div class="filter-tab active" data-filter="all">All Videos</div>
+            <div class="filter-tab" data-filter="free">Free Tutorials</div>
+            <div class="filter-tab" data-filter="premium">Premium Only</div>
+        </div>
+    </section>
+
+    <section class="tutorials-section">
+        <h2 class="section-title">Free Tutorials</h2>
+        <div class="videos-grid" id="freeVideos">
+            <div class="video-card" data-type="free" onclick="playVideo('intro-ea')">
+                <div class="video-thumbnail">
+                    <div class="video-duration">12:34</div>
+                </div>
+                <div class="video-content">
+                    <h3 class="video-title">Introduction to Expert Advisors</h3>
+                    <p class="video-description">Learn the basics of automated trading and how Expert Advisors work on MetaTrader platforms.</p>
+                    <div class="video-meta">
+                        <span>⏱ 12:34</span>
+                        <span>👁 Free Access</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="video-card" data-type="free" onclick="playVideo('installing-ea')">
+                <div class="video-thumbnail">
+                    <div class="video-duration">15:20</div>
+                </div>
+                <div class="video-content">
+                    <h3 class="video-title">Installing Your First EA</h3>
+                    <p class="video-description">Step-by-step guide to installing and activating Expert Advisors on MT4 and MT5.</p>
+                    <div class="video-meta">
+                        <span>⏱ 15:20</span>
+                        <span>👁 Free Access</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="video-card" data-type="free" onclick="playVideo('mt4-setup')">
+                <div class="video-thumbnail">
+                    <div class="video-duration">18:45</div>
+                </div>
+                <div class="video-content">
+                    <h3 class="video-title">Complete MT4/MT5 Setup Guide</h3>
+                    <p class="video-description">Configure your MetaTrader platform for optimal EA performance and trading experience.</p>
+                    <div class="video-meta">
+                        <span>⏱ 18:45</span>
+                        <span>👁 Free Access</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="video-card" data-type="free" onclick="playVideo('risk-management')">
+                <div class="video-thumbnail">
+                    <div class="video-duration">22:10</div>
+                </div>
+                <div class="video-content">
+                    <h3 class="video-title">Understanding Risk Management</h3>
+                    <p class="video-description">Essential risk management principles for automated trading success and capital preservation.</p>
+                    <div class="video-meta">
+                        <span>⏱ 22:10</span>
+                        <span>👁 Free Access</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="video-card" data-type="free" onclick="playVideo('broker-setup')">
+                <div class="video-thumbnail">
+                    <div class="video-duration">16:30</div>
+                </div>
+                <div class="video-content">
+                    <h3 class="video-title">Broker Account Setup Guide</h3>
+                    <p class="video-description">How to choose and set up your broker account for EA trading with our partner brokers.</p>
+                    <div class="video-meta">
+                        <span>⏱ 16:30</span>
+                        <span>👁 Free Access</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="video-card" data-type="free" onclick="playVideo('ea-basics')">
+                <div class="video-thumbnail">
+                    <div class="video-duration">20:15</div>
+                </div>
+                <div class="video-content">
+                    <h3 class="video-title">EA Settings Explained</h3>
+                    <p class="video-description">Understanding basic EA parameters and how to adjust them for your trading style.</p>
+                    <div class="video-meta">
+                        <span>⏱ 20:15</span>
+                        <span>👁 Free Access</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title">Premium Tutorials</h2>
+        <div class="videos-grid" id="premiumVideos">
+            <div class="video-card locked" data-type="premium" onclick="showUpgradePrompt()">
+                <div class="video-thumbnail">
+                    <div class="video-duration">35:20</div>
+                    <div class="lock-overlay">
+                        <div class="lock-icon">🔒</div>
+                        <div class="lock-text">Premium Only</div>
+                    </div>
+                </div>
+                <div class="video-content">
+                    <h3 class="video-title">Advanced EA Optimization Techniques</h3>
+                    <p class="video-description">Master advanced optimization strategies to maximize EA performance across different market conditions.</p>
+                    <div class="video-meta">
+                        <span>⏱ 35:20</span>
+                        <span class="premium-badge">PREMIUM</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="video-card locked" data-type="premium" onclick="showUpgradePrompt()">
+                <div class="video-thumbnail">
+                    <div class="video-duration">28:45</div>
+                    <div class="lock-overlay">
+                        <div class="lock-icon">🔒</div>
+                        <div class="lock-text">Premium Only</div>
+                    </div>
+                </div>
+                <div class="video-content">
+                    <h3 class="video-title">Multi-Timeframe Analysis Mastery</h3>
+                    <p class="video-description">Learn to use multiple timeframes for better trade entries and higher win rates with your EAs.</p>
+                    <div class="video-meta">
+                        <span>⏱ 28:45</span>
+                        <span class="premium-badge">PREMIUM</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="video-card locked" data-type="premium" onclick="showUpgradePrompt()">
+                <div class="video-thumbnail">
+                    <div class="video-duration">42:30</div>
+                    <div class="lock-overlay">
+                        <div class="lock-icon">🔒</div>
+                        <div class="lock-text">Premium Only</div>
+                    </div>
+                </div>
+                <div class="video-content">
+                    <h3 class="video-title">Portfolio Management Strategies</h3>
+                    <p class="video-description">Build and manage a diversified EA portfolio for consistent returns and reduced risk.</p>
+                    <div class="video-meta">
+                        <span>⏱ 42:30</span>
+                        <span class="premium-badge">PREMIUM</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="video-card locked" data-type="premium" onclick="showUpgradePrompt()">
+                <div class="video-thumbnail">
+                    <div class="video-duration">38:15</div>
+                    <div class="lock-overlay">
+                        <div class="lock-icon">🔒</div>
+                        <div class="lock-text">Premium Only</div>
+                    </div>
+                </div>
+                <div class="video-content">
+                    <h3 class="video-title">Custom EA Settings Configuration</h3>
+                    <p class="video-description">Deep dive into advanced EA parameters and custom configurations for each market condition.</p>
+                    <div class="video-meta">
+                        <span>⏱ 38:15</span>
+                        <span class="premium-badge">PREMIUM</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="video-card locked" data-type="premium" onclick="showUpgradePrompt()">
+                <div class="video-thumbnail">
+                    <div class="video-duration">45:00</div>
+                    <div class="lock-overlay">
+                        <div class="lock-icon">🔒</div>
+                        <div class="lock-text">Premium Only</div>
+                    </div>
+                </div>
+                <div class="video-content">
+                    <h3 class="video-title">Live Trading Psychology Mastery</h3>
+                    <p class="video-description">Develop the mental discipline required for successful automated trading and EA management.</p>
+                    <div class="video-meta">
+                        <span>⏱ 45:00</span>
+                        <span class="premium-badge">PREMIUM</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="video-card locked" data-type="premium" onclick="showUpgradePrompt()">
+                <div class="video-thumbnail">
+                    <div class="video-duration">32:50</div>
+                    <div class="lock-overlay">
+                        <div class="lock-icon">🔒</div>
+                        <div class="lock-text">Premium Only</div>
+                    </div>
+                </div>
+                <div class="video-content">
+                    <h3 class="video-title">News Trading with EAs</h3>
+                    <p class="video-description">Advanced strategies for trading major news events using automated systems safely.</p>
+                    <div class="video-meta">
+                        <span>⏱ 32:50</span>
+                        <span class="premium-badge">PREMIUM</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="video-card locked" data-type="premium" onclick="showUpgradePrompt()">
+                <div class="video-thumbnail">
+                    <div class="video-duration">40:20</div>
+                    <div class="lock-overlay">
+                        <div class="lock-icon">🔒</div>
+                        <div class="lock-text">Premium Only</div>
+                    </div>
+                </div>
+                <div class="video-content">
+                    <h3 class="video-title">VPS Setup & Optimization</h3>
+                    <p class="video-description">Complete guide to setting up and optimizing your VPS for 24/7 EA trading.</p>
+                    <div class="video-meta">
+                        <span>⏱ 40:20</span>
+                        <span class="premium-badge">PREMIUM</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="video-card locked" data-type="premium" onclick="showUpgradePrompt()">
+                <div class="video-thumbnail">
+                    <div class="video-duration">36:40</div>
+                    <div class="lock-overlay">
+                        <div class="lock-icon">🔒</div>
+                        <div class="lock-text">Premium Only</div>
+                    </div>
+                </div>
+                <div class="video-content">
+                    <h3 class="video-title">Backtesting & Forward Testing</h3>
+                    <p class="video-description">Professional techniques for testing EAs before live deployment to ensure profitability.</p>
+                    <div class="video-meta">
+                        <span>⏱ 36:40</span>
+                        <span class="premium-badge">PREMIUM</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="upgrade-cta">
+            <h3>Unlock All Premium Content</h3>
+            <p>Get unlimited access to all premium tutorials, live mentorship sessions, exclusive trading strategies, and priority support. Take your automated trading to the next level.</p>
+            <a href="#" class="upgrade-button" onclick="showPaymentModal(event)">Upgrade to Premium</a>
+        </div>
+    </section>
+
+    <!-- Payment Modal -->
+    <div class="payment-modal" id="paymentModal">
+        <div class="payment-modal-content">
+            <button class="modal-close" onclick="closePaymentModal()">×</button>
+            <h2 class="modal-title">Choose Payment Method</h2>
+            <p class="modal-subtitle">Select your preferred payment method to upgrade to Premium and unlock all exclusive content.</p>
+            
+            <div class="payment-options">
+                <a href="#" class="payment-option" onclick="payWithCard(event)">
+                    <div class="payment-icon">💳</div>
+                    <div class="payment-details">
+                        <h4>Pay with Card</h4>
+                        <p>Secure payment via Paystack - instant access</p>
+                    </div>
+                </a>
+                
+                <a href="https://t.me/Alioladimeji" class="payment-option" target="_blank">
+                    <div class="payment-icon">₿</div>
+                    <div class="payment-details">
+                        <h4>Pay with Cryptocurrency</h4>
+                        <p>Bitcoin, USDT, Ethereum - contact via Telegram</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2024 MOFx EAs. All rights reserved.</p>
+        <p style="margin-top: 0.5rem;">Contact: WhatsApp +234 816 044 6105 | Email: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="53323f3a32383a3d35363d243213343e323a3f7d303c3e">[email&#160;protected]</a></p>
+    </footer>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        // Filter functionality
+        const filterTabs = document.querySelectorAll('.filter-tab');
+        const videoCards = document.querySelectorAll('.video-card');
+
+        filterTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                filterTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+
+                const filter = tab.dataset.filter;
+
+                videoCards.forEach(card => {
+                    if (filter === 'all') {
+                        card.style.display = 'block';
+                    } else if (filter === card.dataset.type) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        function playVideo(videoId) {
+            alert(`Playing video: ${videoId}\n\nIn production, this would open a video player with the tutorial content.`);
+        }
+
+        function showUpgradePrompt() {
+            showPaymentModal(event);
+        }
+
+        function showPaymentModal(e) {
+            if (e) e.preventDefault();
+            document.getElementById('paymentModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePaymentModal() {
+            document.getElementById('paymentModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function payWithCard(e) {
+            e.preventDefault();
+            alert('Redirecting to Paystack payment gateway...\n\nIn production, this would:\n• Open secure Paystack checkout\n• Process card payment\n• Activate premium access immediately');
+            closePaymentModal();
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('paymentModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closePaymentModal();
+            }
+        });
+    </script>
+</body>
+</html>
