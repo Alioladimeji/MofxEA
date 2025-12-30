@@ -8,7 +8,19 @@
     
     <!-- Supabase Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="supabase-config.js"></script>
+    <script>
+        // Supabase Configuration (Inline for reliability)
+        const SUPABASE_CONFIG = {
+            url: 'https://xakzoaabyaqxgyyxvezb.supabase.co',
+            anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhha3pvYWFieWFxeGd5eXh2ZXpiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjcwNjkyNzMsImV4cCI6MjA4MjY0NTI3M30.zCA3u10SmWaH6FeSqoFDH-MhDMlTgCcb2ICsor7WaPI'
+        };
+        
+        // Initialize Supabase Client
+        const supabase = window.supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
+        
+        // Test connection
+        console.log('Supabase initialized:', supabase ? '✓ Success' : '✗ Failed');
+    </script>
     
     <style>
         * {
@@ -383,10 +395,10 @@
 
                 <div class="social-login">
                     <button type="button" class="social-button" onclick="alert('Google login integration')">
-                        <img src="google-logo-transparent.png" alt="Google"> Google
+                        <img src="/google-logo-transparent.png" alt="Google"> Google
                     </button>
                     <button type="button" class="social-button" onclick="alert('Facebook login integration')">
-                        <img src="facebook-logo-facebook-icon-transparent-free-png.webp" alt="Facebook"> Facebook
+                        <img src="/facebook-logo-facebook-icon-transparent-free-png.webp" alt="Facebook"> Facebook
                     </button>
                 </div>
             </form>
@@ -426,16 +438,16 @@
 
                 <div class="social-login">
                     <button type="button" class="social-button" onclick="alert('Google signup integration')">
-                        <img src="google-logo-transparent.png" alt="Google"> Google
+                        <img src="/google-logo-transparent.png" alt="Google"> Google
                     </button>
                     <button type="button" class="social-button" onclick="alert('Facebook signup integration')">
-                        <img src="facebook-logo-facebook-icon-transparent-free-png.webp" alt="Facebook"> Facebook
+                        <img src="/facebook-logo-facebook-icon-transparent-free-png.webp" alt="Facebook"> Facebook
                     </button>
                 </div>
             </form>
 
             <div class="back-link">
-                <a href="mofx-eas.html">← Back to Home</a>
+                <a href="index.html">← Back to Home</a>
             </div>
         </div>
     </div>

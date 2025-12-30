@@ -774,11 +774,56 @@
 
         @media (max-width: 1024px) {
             .nav-menu {
+                position: fixed;
+                top: 80px;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 0;
+                box-shadow: 0 4px 20px var(--shadow-lg);
                 display: none;
+                max-height: calc(100vh - 80px);
+                overflow-y: auto;
+                gap: 0;
+            }
+
+            .nav-menu.mobile-active {
+                display: flex !important;
+            }
+
+            .nav-menu li {
+                margin: 0;
+                width: 100%;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .nav-menu li a {
+                padding: 1.25rem 2rem;
+                display: block;
+                font-size: 1.1rem;
+            }
+
+            .nav-menu .cta-button {
+                margin: 1rem 2rem;
+                width: calc(100% - 4rem);
+                text-align: center;
             }
 
             .mobile-menu-toggle {
                 display: flex;
+            }
+
+            .mobile-menu-toggle.active span:nth-child(1) {
+                transform: rotate(45deg) translate(5px, 5px);
+            }
+
+            .mobile-menu-toggle.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .mobile-menu-toggle.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(7px, -6px);
             }
 
             .hero-container {
@@ -879,7 +924,7 @@
             </div>
             <div class="hero-image fade-in">
                 <div class="hero-image-placeholder">
-                    <img src="lastImage-82.jpg" alt="MOFx EAs - Automated Trading Robot">
+                    <img src="images/lastImage-82.jpg" alt="MOFx EAs - Automated Trading Robot">
                 </div>
             </div>
         </div>
@@ -1010,35 +1055,35 @@
         <div class="broker-grid">
             <div class="broker-card fade-in">
                 <div class="broker-logo">
-                    <img src="Exness-Logo-Forex-Broker.webp" alt="Exness">
+                    <img src="images/Exness-Logo-Forex-Broker.webp" alt="Exness">
                 </div>
                 <p>Ultra-low spreads and instant execution</p>
                 <a href="https://one.exnesstrack.net/a/your-affiliate-id" class="broker-button">Sign Up</a>
             </div>
             <div class="broker-card fade-in">
                 <div class="broker-logo">
-                    <img src="vantage-full-logo-RGB.png" alt="Vantage">
+                    <img src="images/vantage-full-logo-RGB.png" alt="Vantage">
                 </div>
                 <p>Multi-regulated with deep liquidity</p>
                 <a href="https://www.vantagemarkets.com/partners/your-id" class="broker-button">Sign Up</a>
             </div>
             <div class="broker-card fade-in">
                 <div class="broker-logo">
-                    <img src="ftmo-Logo-color-01.png" alt="FTMO">
+                    <img src="images/ftmo-Logo-color-01.png" alt="FTMO">
                 </div>
                 <p>Prop trading with funded accounts</p>
                 <a href="https://ftmo.com/?affiliates=your-id" class="broker-button">Sign Up</a>
             </div>
             <div class="broker-card fade-in">
                 <div class="broker-logo">
-                    <img src="67c7d713cc5a7d2f9f1fc9dd_Open_Graph__(4)_.png" alt="BlueGuardian">
+                    <img src="images/67c7d713cc5a7d2f9f1fc9dd_Open Graph (4).png" alt="BlueGuardian">
                 </div>
                 <p>Professional prop firm funding</p>
                 <a href="https://blueguardian.com/ref/your-id" class="broker-button">Sign Up</a>
             </div>
             <div class="broker-card fade-in">
                 <div class="broker-logo">
-                    <img src="tradingview-logo.png" alt="TradingView">
+                    <img src="images/tradingview-logo.png" alt="TradingView">
                 </div>
                 <p>Advanced charting and analysis tools</p>
             </div>
@@ -1159,21 +1204,21 @@
         <div class="contact-grid">
             <div class="contact-card fade-in">
                 <div class="contact-icon">
-                    <img src="logo-whatsapp-png-pic-0.png" alt="WhatsApp">
+                    <img src="images/logo-whatsapp-png-pic-0.png" alt="WhatsApp">
                 </div>
                 <h4>WhatsApp</h4>
                 <a href="https://wa.me/2348160446105">+234 816 044 6105</a>
             </div>
             <div class="contact-card fade-in">
                 <div class="contact-icon">
-                    <img src="Gmail_Logo_512px.png" alt="Email">
+                    <img src="images/Gmail_Logo_512px.png" alt="Email">
                 </div>
                 <h4>Email</h4>
                 <a href="/cdn-cgi/l/email-protection#78191411191311161e1d160f19381f15191114561b1715"><span class="__cf_email__" data-cfemail="3d5c51545c5654535b58534a5c7d5a505c5451135e5250">[email&#160;protected]</span></a>
             </div>
             <div class="contact-card fade-in">
                 <div class="contact-icon">
-                    <img src="Telegram_logo.svg.webp" alt="Telegram">
+                    <img src="images/Telegram_logo.svg.webp" alt="Telegram">
                 </div>
                 <h4>Telegram</h4>
                 <a href="https://t.me/Alioladimeji">@Alioladimeji</a>
@@ -1284,13 +1329,33 @@
             observer.observe(el);
         });
 
-        document.getElementById('mobileToggle').addEventListener('click', () => {
+        document.getElementById('mobileToggle').addEventListener('click', function() {
             const navMenu = document.querySelector('.nav-menu');
-            if (navMenu.style.display === 'flex') {
-                navMenu.style.display = 'none';
+            const mobileToggle = this;
+            
+            // Toggle active class
+            mobileToggle.classList.toggle('active');
+            navMenu.classList.toggle('mobile-active');
+            
+            // Prevent body scroll when menu is open
+            if (navMenu.classList.contains('mobile-active')) {
+                document.body.style.overflow = 'hidden';
             } else {
-                navMenu.style.display = 'flex';
+                document.body.style.overflow = 'auto';
             }
+        });
+
+        // Close menu when clicking a link
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                const mobileToggle = document.getElementById('mobileToggle');
+                const navMenu = document.querySelector('.nav-menu');
+                if (mobileToggle && navMenu) {
+                    mobileToggle.classList.remove('active');
+                    navMenu.classList.remove('mobile-active');
+                    document.body.style.overflow = 'auto';
+                }
+            });
         });
     </script>
 </body>

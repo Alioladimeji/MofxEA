@@ -8,7 +8,19 @@
     
     <!-- Supabase Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="supabase-config.js"></script>
+    <script>
+        // Supabase Configuration (Inline for reliability)
+        const SUPABASE_CONFIG = {
+            url: 'https://xakzoaabyaqxgyyxvezb.supabase.co',
+            anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhha3pvYWFieWFxeGd5eXh2ZXpiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjcwNjkyNzMsImV4cCI6MjA4MjY0NTI3M30.zCA3u10SmWaH6FeSqoFDH-MhDMlTgCcb2ICsor7WaPI'
+        };
+        
+        // Initialize Supabase Client
+        const supabase = window.supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
+        
+        // Test connection
+        console.log('Supabase initialized:', supabase ? '✓ Success' : '✗ Failed');
+    </script>
     
     <style>
         * {
@@ -579,7 +591,7 @@
                     <h2 class="section-title">Quick Actions</h2>
                 </div>
                 <div class="quick-actions">
-                    <a href="mofx-eas.html#products" class="quick-action">
+                    <a href="index.html#products" class="quick-action">
                         <div class="quick-action-icon">🛒</div>
                         <div class="quick-action-title">Buy New EA</div>
                     </a>
@@ -705,7 +717,7 @@
                         <div class="empty-state-icon">📦</div>
                         <h3>No EAs Purchased Yet</h3>
                         <p>Browse our Expert Advisors and start your automated trading journey!</p>
-                        <a href="mofx-eas.html#products" class="action-button primary">Browse EAs</a>
+                        <a href="index.html#products" class="action-button primary">Browse EAs</a>
                     </div>
                 `;
                 return;
@@ -782,7 +794,7 @@
         async function logout() {
             if (confirm('Are you sure you want to logout?')) {
                 await supabase.auth.signOut();
-                window.location.href = 'mofx-eas.html';
+                window.location.href = 'index.html';
             }
         }
 
