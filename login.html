@@ -6,22 +6,6 @@
     <title>Login / Sign Up - MOFx EAs</title>
     <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
     
-    <!-- Supabase Client -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script>
-        // Supabase Configuration (Inline for reliability)
-        const SUPABASE_CONFIG = {
-            url: 'https://xakzoaabyaqxgyyxvezb.supabase.co',
-            anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhha3pvYWFieWFxeGd5eXh2ZXpiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjcwNjkyNzMsImV4cCI6MjA4MjY0NTI3M30.zCA3u10SmWaH6FeSqoFDH-MhDMlTgCcb2ICsor7WaPI'
-        };
-        
-        // Initialize Supabase Client
-        const supabase = window.supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
-        
-        // Test connection
-        console.log('Supabase initialized:', supabase ? '✓ Success' : '✗ Failed');
-    </script>
-    
     <style>
         * {
             margin: 0;
@@ -395,10 +379,10 @@
 
                 <div class="social-login">
                     <button type="button" class="social-button" onclick="alert('Google login integration')">
-                        <img src="/google-logo-transparent.png" alt="Google"> Google
+                        <img src="images/Google__G__logo.svg.png" alt="Google"> Google
                     </button>
                     <button type="button" class="social-button" onclick="alert('Facebook login integration')">
-                        <img src="/facebook-logo-facebook-icon-transparent-free-png.webp" alt="Facebook"> Facebook
+                        <img src="images/Facebook_f_logo_(2021).svg.png" alt="Facebook"> Facebook
                     </button>
                 </div>
             </form>
@@ -438,10 +422,10 @@
 
                 <div class="social-login">
                     <button type="button" class="social-button" onclick="alert('Google signup integration')">
-                        <img src="images/google-logo-transparent.png" alt="Google"> Google
+                        <img src="images/Google__G__logo.svg.png" alt="Google"> Google
                     </button>
                     <button type="button" class="social-button" onclick="alert('Facebook signup integration')">
-                        <img src="images/facebook-logo-facebook-icon-transparent-free-png.webp" alt="Facebook"> Facebook
+                        <img src="images/Facebook_f_logo_(2021).svg.png" alt="Facebook"> Facebook
                     </button>
                 </div>
             </form>
@@ -451,6 +435,34 @@
             </div>
         </div>
     </div>
+
+    <!-- Supabase Client - Load before other scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // Wait for Supabase to load
+        let supabase;
+        
+        // Initialize Supabase
+        function initSupabase() {
+            if (window.supabase && window.supabase.createClient) {
+                const SUPABASE_CONFIG = {
+                    url: 'https://xakzoaabyaqxgyyxvezb.supabase.co',
+                    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhha3pvYWFieWFxeGd5eXh2ZXpiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjcwNjkyNzMsImV4cCI6MjA4MjY0NTI3M30.zCA3u10SmWaH6FeSqoFDH-MhDMlTgCcb2ICsor7WaPI'
+                };
+                
+                supabase = window.supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
+                console.log('✓ Supabase initialized successfully');
+                return true;
+            }
+            return false;
+        }
+
+        // Try to initialize immediately
+        if (!initSupabase()) {
+            // If not ready, wait and try again
+            setTimeout(initSupabase, 500);
+        }
+    </script>
 
     <script>
         // Tab switching
@@ -471,6 +483,13 @@
         // Login form validation and Supabase authentication
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
+            
+            // Check if Supabase is initialized
+            if (!supabase) {
+                alert('System is loading, please wait a moment and try again.');
+                initSupabase();
+                return;
+            }
             
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;

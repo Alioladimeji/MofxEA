@@ -279,15 +279,15 @@
 
         .ea-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
         }
 
         .ea-card {
             background: var(--card-bg);
             border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 2.5rem;
+            border-radius: 12px;
+            padding: 1.5rem;
             transition: all 0.4s ease;
             position: relative;
             overflow: hidden;
@@ -295,10 +295,10 @@
 
         .ea-card-image {
             width: 100%;
-            height: 180px;
+            height: 120px;
             background: linear-gradient(135deg, #E5E9F0 0%, #D1D9E0 100%);
-            border-radius: 12px;
-            margin-bottom: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -312,7 +312,7 @@
         }
 
         .ea-icon {
-            font-size: 4rem;
+            font-size: 2.5rem;
             opacity: 0.7;
         }
 
@@ -339,27 +339,29 @@
         }
 
         .ea-card h3 {
-            font-size: 1.75rem;
+            font-size: 1.35rem;
             color: var(--primary);
-            margin-bottom: 1rem;
+            margin-bottom: 0.75rem;
             font-weight: 600;
         }
 
         .ea-card p {
             color: var(--text-light);
-            margin-bottom: 1.5rem;
-            line-height: 1.8;
+            margin-bottom: 1.25rem;
+            line-height: 1.6;
+            font-size: 0.9rem;
         }
 
         .ea-card-button {
             display: inline-block;
-            padding: 0.75rem 1.5rem;
+            padding: 0.7rem 1.4rem;
             background: transparent;
             border: 2px solid var(--primary);
             color: var(--primary);
             border-radius: 8px;
             text-decoration: none;
             font-weight: 600;
+            font-size: 0.95rem;
             transition: all 0.3s ease;
         }
 
@@ -849,10 +851,50 @@
             }
 
             .section-header h2 {
-                font-size: 2.5rem;
+                font-size: 2rem;
             }
 
-            .ea-grid,
+            .section-header p {
+                font-size: 0.95rem;
+            }
+
+            .ea-grid {
+                grid-template-columns: 1fr;
+                gap: 1.25rem;
+                padding: 1rem 0;
+            }
+
+            .ea-card {
+                padding: 1.25rem;
+            }
+
+            .ea-card-image {
+                height: 100px;
+                margin-bottom: 0.75rem;
+            }
+
+            .ea-icon {
+                font-size: 2rem;
+            }
+
+            .ea-card h3 {
+                font-size: 1.2rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .ea-card p {
+                font-size: 0.85rem;
+                line-height: 1.5;
+                margin-bottom: 1rem;
+            }
+
+            .ea-card-button {
+                font-size: 0.9rem;
+                padding: 0.65rem 1.25rem;
+                width: 100%;
+                text-align: center;
+            }
+
             .results-grid,
             .broker-grid,
             .contact-grid {
@@ -932,7 +974,7 @@
 
     <div class="ticker-wrapper">
         <script type="module" src="https://widgets.tradingview-widget.com/w/en/tv-ticker-tape.js"></script>
-        <tv-ticker-tape symbols='FOREXCOM:SPXUSD,BITSTAMP:BTCUSD,BITSTAMP:ETHUSD,OANDA:XAUUSD,CAPITALCOM:US100,FX:EURUSD,FX:GBPUSD,FX:USDJPY'></tv-ticker-tape>
+        <tv-ticker-tape symbols='FOREXCOM:SPXUSD,FX:EURUSD,BITSTAMP:BTCUSD,BITSTAMP:ETHUSD,OANDA:XAUUSD,FX:US30,CAPITALCOM:US100' colorTheme="light" isTransparent="false" displayMode="adaptive" locale="en"></tv-ticker-tape>
     </div>
 
     <section id="products">
@@ -1057,35 +1099,35 @@
                 <div class="broker-logo">
                     <img src="images/Exness-Logo-Forex-Broker.webp" alt="Exness">
                 </div>
-                <p>Ultra-low spreads and instant execution</p>
+                <p>Exness</p>
                 <a href="https://one.exnesstrack.net/a/your-affiliate-id" class="broker-button">Sign Up</a>
             </div>
             <div class="broker-card fade-in">
                 <div class="broker-logo">
                     <img src="images/vantage-full-logo-RGB.png" alt="Vantage">
                 </div>
-                <p>Multi-regulated with deep liquidity</p>
+                <p>Vantage International</p>
                 <a href="https://www.vantagemarkets.com/partners/your-id" class="broker-button">Sign Up</a>
             </div>
             <div class="broker-card fade-in">
                 <div class="broker-logo">
                     <img src="images/ftmo-Logo-color-01.png" alt="FTMO">
                 </div>
-                <p>Prop trading with funded accounts</p>
+                <p>FTMO</p>
                 <a href="https://ftmo.com/?affiliates=your-id" class="broker-button">Sign Up</a>
             </div>
             <div class="broker-card fade-in">
                 <div class="broker-logo">
                     <img src="images/67c7d713cc5a7d2f9f1fc9dd_Open Graph (4).png" alt="BlueGuardian">
                 </div>
-                <p>Professional prop firm funding</p>
+                <p>Blue Guardian</p>
                 <a href="https://blueguardian.com/ref/your-id" class="broker-button">Sign Up</a>
             </div>
             <div class="broker-card fade-in">
                 <div class="broker-logo">
                     <img src="images/tradingview-logo.png" alt="TradingView">
                 </div>
-                <p>Advanced charting and analysis tools</p>
+                <p>Tradingview</p>
             </div>
         </div>
     </section>
