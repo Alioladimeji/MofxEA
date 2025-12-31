@@ -441,7 +441,12 @@
     <script src="supabase-config.js"></script>
 
     <script>
-        const supabase = window.supabaseClient;
+        function getSupabase() {
+            if (window.getSupabaseClient) {
+                return window.getSupabaseClient();
+            }
+            return window.supabaseClient || null;
+        }
 
         // Tab switching
         const tabs = document.querySelectorAll('.auth-tab');
@@ -462,6 +467,7 @@
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
+            const supabase = getSupabase();
             if (!supabase || !supabase.auth || !supabase.auth.signInWithPassword) {
                 alert('Auth is still loading. Please refresh and try again.');
                 return;
@@ -508,6 +514,12 @@
                     });
 
                     if (error) throw error;
+                    if (!data || !data.session) {
+                        alert('Login needs email confirmation. Please verify your email and try again.');
+                        submitBtn.textContent = originalText;
+                        submitBtn.disabled = false;
+                        return;
+                    }
 
                     // Store session preference
                     if (rememberMe) {
@@ -530,6 +542,7 @@
         document.getElementById('signupForm').addEventListener('submit', async (e) => {
             e.preventDefault();
 
+            const supabase = getSupabase();
             if (!supabase || !supabase.auth || !supabase.auth.signUp) {
                 alert('Auth is still loading. Please refresh and try again.');
                 return;

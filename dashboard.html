@@ -614,13 +614,22 @@
     <script src="supabase-config.js"></script>
 
     <script>
-        const supabase = window.supabaseClient;
+        function getSupabase() {
+            if (window.getSupabaseClient) {
+                return window.getSupabaseClient();
+            }
+            return window.supabaseClient || null;
+        }
+        let supabase = null;
         let currentUser = null;
         let userPurchases = [];
 
         // Check authentication and load user data
         async function initDashboard() {
             // Wait for Supabase to be ready
+            if (!supabase) {
+                supabase = getSupabase();
+            }
             if (!supabase || !supabase.auth) {
                 console.log('Waiting for Supabase...');
                 setTimeout(initDashboard, 500);
