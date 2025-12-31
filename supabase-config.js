@@ -17,5 +17,15 @@ const BUSINESS_CONFIG = {
 };
 
 // Initialize Supabase Client
-// This will be loaded in the HTML files via CDN
-const supabase = window.supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
+// This should be loaded after the Supabase CDN script.
+(function initSupabaseClient() {
+    if (!window.supabase || !window.supabase.createClient) {
+        console.error('Supabase client library not loaded. Check the CDN script tag.');
+        return;
+    }
+
+    window.supabaseClient = window.supabase.createClient(
+        SUPABASE_CONFIG.url,
+        SUPABASE_CONFIG.anonKey
+    );
+})();
