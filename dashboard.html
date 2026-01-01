@@ -520,9 +520,10 @@
 
                 <div class="ea-list">
                     <div class="empty-state">
-                        <div class="empty-state-icon">⏳</div>
-                        <h3>Loading your purchases...</h3>
-                        <p>We'll only show paid and confirmed products here.</p>
+                        <div class="empty-state-icon">📦</div>
+                        <h3>No EAs Purchased Yet</h3>
+                        <p>Browse our Expert Advisors and start your automated trading journey!</p>
+                        <a href="index.html#products" class="action-button primary">Browse EAs</a>
                     </div>
                 </div>
             </section>
@@ -635,6 +636,32 @@
             }
         }
 
+        function applyUserProfile(name, isPremium) {
+            const userName = name || 'User';
+            document.getElementById('userName').textContent = userName;
+
+            const initials = userName.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
+            document.getElementById('userAvatar').textContent = initials;
+
+            const membershipEl = document.querySelector('.user-details p');
+            if (isPremium) {
+                membershipEl.textContent = 'Premium Member';
+                membershipEl.style.color = '#27AE60';
+            } else {
+                membershipEl.textContent = 'Free Member';
+                membershipEl.style.color = '';
+            }
+        }
+
+        function getFallbackUserName() {
+            return (
+                currentUser?.user_metadata?.full_name ||
+                currentUser?.user_metadata?.name ||
+                currentUser?.email ||
+                'User'
+            );
+        }
+
         // Load user profile from database
         async function loadUserProfile() {
             try {
@@ -644,27 +671,15 @@
                     .eq('id', currentUser.id)
                     .single();
 
-                if (error) throw error;
-
-                // Update UI with user data
-                const userName = data.full_name || 'User';
-                document.getElementById('userName').textContent = userName;
-                
-                // Set avatar initials
-                const initials = userName.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
-                document.getElementById('userAvatar').textContent = initials;
-
-                // Update membership status
-                const membershipEl = document.querySelector('.user-details p');
-                if (data.is_premium_member) {
-                    membershipEl.textContent = 'Premium Member';
-                    membershipEl.style.color = '#27AE60';
-                } else {
-                    membershipEl.textContent = 'Free Member';
+                if (error || !data) {
+                    applyUserProfile(getFallbackUserName(), false);
+                    return;
                 }
 
+                applyUserProfile(data.full_name || getFallbackUserName(), data.is_premium_member);
             } catch (error) {
                 console.error('Error loading profile:', error);
+                applyUserProfile(getFallbackUserName(), false);
             }
         }
 
