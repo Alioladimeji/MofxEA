@@ -409,6 +409,95 @@
             color: var(--dark);
         }
 
+        .notice-banner {
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            background: #fff5d6;
+            border: 1px solid #ffd889;
+            color: #8a5a00;
+            padding: 0.9rem 1.2rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+        }
+
+        .notice-banner strong {
+            color: #7a4b00;
+        }
+
+        .notice-action {
+            color: #7a4b00;
+            font-weight: 600;
+            text-decoration: none;
+            border-bottom: 2px solid rgba(122, 75, 0, 0.3);
+        }
+
+        .orders-list {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .order-item {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 1fr;
+            gap: 1rem;
+            align-items: center;
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+        }
+
+        .order-status {
+            font-weight: 600;
+            color: #1f7a3f;
+        }
+
+        .order-meta {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .settings-form {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem 0.9rem;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            font-size: 0.95rem;
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(42, 123, 228, 0.12);
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+        }
+
         @media (max-width: 1024px) {
             .dashboard-container {
                 grid-template-columns: 1fr;
@@ -435,6 +524,11 @@
                 flex-direction: row;
                 justify-content: center;
             }
+
+            .order-item {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
         }
     </style>
 </head>
@@ -448,17 +542,17 @@
                     <li><a href="#" class="active"><span class="icon">📊</span> Dashboard</a></li>
                     <li><a href="#my-eas"><span class="icon">🤖</span> My EAs</a></li>
                     <li><a href="tutorials.html"><span class="icon">📚</span> Tutorials</a></li>
-                    <li><a href="#"><span class="icon">📦</span> Orders</a></li>
-                    <li><a href="#"><span class="icon">⚙️</span> Settings</a></li>
-                    <li><a href="#"><span class="icon">💬</span> Support</a></li>
+                    <li><a href="#orders"><span class="icon">📦</span> Orders</a></li>
+                    <li><a href="#settings"><span class="icon">⚙️</span> Settings</a></li>
+                    <li><a href="https://t.me/Alioladimeji" target="_blank" rel="noopener"><span class="icon">💬</span> Support</a></li>
                 </ul>
             </nav>
             <div class="sidebar-footer">
                 <div class="user-info">
-                    <div class="user-avatar" id="userAvatar">JD</div>
+                    <div class="user-avatar" id="userAvatar">U</div>
                     <div class="user-details">
-                        <h4 id="userName">John Doe</h4>
-                        <p>Premium Member</p>
+                        <h4 id="userName">User</h4>
+                        <p>Standard Member</p>
                     </div>
                 </div>
                 <button class="logout-button" onclick="logout()">Logout</button>
@@ -469,6 +563,11 @@
         <main class="main-content">
             <div class="top-bar">
                 <h1 class="page-title">Welcome back! 👋</h1>
+            </div>
+
+            <div class="notice-banner" id="premiumExpiryBanner" aria-live="polite">
+                <strong>Premium expiring soon.</strong> Renew to keep access to premium tutorials without interruption.
+                <a href="tutorials.html" class="notice-action">Renew Now</a>
             </div>
 
             <!-- Stats Grid -->
@@ -528,6 +627,21 @@
                 </div>
             </section>
 
+            <!-- Orders -->
+            <section class="section" id="orders">
+                <div class="section-header">
+                    <h2 class="section-title">Orders</h2>
+                </div>
+                <div class="orders-list" id="ordersList">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🧾</div>
+                        <h3>No Orders Yet</h3>
+                        <p>Your confirmed purchases will appear here.</p>
+                        <a href="index.html#products" class="action-button primary">Browse EAs</a>
+                    </div>
+                </div>
+            </section>
+
             <!-- Quick Actions -->
             <section class="section">
                 <div class="section-header">
@@ -551,6 +665,34 @@
                         <div class="quick-action-title">EA Settings</div>
                     </a>
                 </div>
+            </section>
+
+            <!-- Settings -->
+            <section class="section" id="settings">
+                <div class="section-header">
+                    <h2 class="section-title">Profile Settings</h2>
+                </div>
+                <form class="settings-form" id="settingsForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="profileName">Full Name</label>
+                            <input type="text" id="profileName" name="profileName" placeholder="Enter your full name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="profilePhone">Phone Number</label>
+                            <input type="tel" id="profilePhone" name="profilePhone" placeholder="Enter your phone number">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="profileEmail">Email</label>
+                            <input type="email" id="profileEmail" name="profileEmail" placeholder="Email address" readonly>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="action-button primary">Save Changes</button>
+                    </div>
+                </form>
             </section>
 
             <!-- Recent Activity -->
@@ -582,6 +724,8 @@
         let supabase = null;
         let currentUser = null;
         let userPurchases = [];
+        let isPremiumMember = false;
+        let premiumExpiresAt = null;
 
         function setStatValue(index, value) {
             const statEl = document.querySelector(`.stat-card:nth-child(${index}) .stat-value`);
@@ -648,8 +792,17 @@
                 membershipEl.textContent = 'Premium Member';
                 membershipEl.style.color = '#27AE60';
             } else {
-                membershipEl.textContent = 'Free Member';
+                membershipEl.textContent = 'Standard Member';
                 membershipEl.style.color = '';
+            }
+
+            const profileName = document.getElementById('profileName');
+            const profileEmail = document.getElementById('profileEmail');
+            if (profileName && !profileName.value) {
+                profileName.value = userName === 'User' ? '' : userName;
+            }
+            if (profileEmail && currentUser?.email) {
+                profileEmail.value = currentUser.email;
             }
         }
 
@@ -662,6 +815,50 @@
             );
         }
 
+        async function resolvePremiumStatus(userRow) {
+            const now = new Date();
+            const expiresAt = userRow?.premium_expires_at ? new Date(userRow.premium_expires_at) : null;
+            const isNotExpired = !expiresAt || expiresAt > now;
+            const hasPremiumFlag = Boolean(userRow?.is_premium_member && isNotExpired);
+
+            let hasActiveSubscription = false;
+            try {
+                const { data } = await supabase
+                    .from('premium_subscriptions')
+                    .select('id')
+                    .eq('user_id', currentUser.id)
+                    .eq('is_active', true)
+                    .limit(1)
+                    .maybeSingle();
+                hasActiveSubscription = Boolean(data);
+            } catch (error) {
+                console.warn('Premium subscription check failed:', error);
+            }
+
+            return hasPremiumFlag || hasActiveSubscription;
+        }
+
+        function updatePremiumExpiryBanner() {
+            const banner = document.getElementById('premiumExpiryBanner');
+            if (!banner) return;
+
+            if (!isPremiumMember || !premiumExpiresAt) {
+                banner.style.display = 'none';
+                return;
+            }
+
+            const now = new Date();
+            const timeDiff = premiumExpiresAt - now;
+            const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+
+            if (daysLeft > 0 && daysLeft <= 7) {
+                banner.style.display = 'flex';
+                banner.querySelector('strong').textContent = `Premium expires in ${daysLeft} day${daysLeft === 1 ? '' : 's'}.`;
+            } else {
+                banner.style.display = 'none';
+            }
+        }
+
         // Load user profile from database
         async function loadUserProfile() {
             try {
@@ -672,14 +869,29 @@
                     .single();
 
                 if (error || !data) {
-                    applyUserProfile(getFallbackUserName(), false);
+                    isPremiumMember = false;
+                    premiumExpiresAt = null;
+                    applyUserProfile(getFallbackUserName(), isPremiumMember);
+                    updatePremiumExpiryBanner();
                     return;
                 }
 
-                applyUserProfile(data.full_name || getFallbackUserName(), data.is_premium_member);
+                const fullName = data.full_name || getFallbackUserName();
+                premiumExpiresAt = data.premium_expires_at ? new Date(data.premium_expires_at) : null;
+                isPremiumMember = await resolvePremiumStatus(data);
+                applyUserProfile(fullName, isPremiumMember);
+                updatePremiumExpiryBanner();
+
+                const profilePhone = document.getElementById('profilePhone');
+                if (profilePhone && !profilePhone.value) {
+                    profilePhone.value = data.phone_number || '';
+                }
             } catch (error) {
                 console.error('Error loading profile:', error);
-                applyUserProfile(getFallbackUserName(), false);
+                isPremiumMember = false;
+                premiumExpiresAt = null;
+                applyUserProfile(getFallbackUserName(), isPremiumMember);
+                updatePremiumExpiryBanner();
             }
         }
 
@@ -708,6 +920,7 @@
         // Display purchases in UI
         function displayPurchases() {
             const eaList = document.querySelector('.ea-list');
+            const ordersList = document.getElementById('ordersList');
             
             if (userPurchases.length === 0) {
                 eaList.innerHTML = `
@@ -718,6 +931,16 @@
                         <a href="index.html#products" class="action-button primary">Browse EAs</a>
                     </div>
                 `;
+                if (ordersList) {
+                    ordersList.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">🧾</div>
+                            <h3>No Orders Yet</h3>
+                            <p>Your confirmed purchases will appear here.</p>
+                            <a href="index.html#products" class="action-button primary">Browse EAs</a>
+                        </div>
+                    `;
+                }
                 return;
             }
 
@@ -747,6 +970,29 @@
                     </div>
                 `;
             }).join('');
+
+            if (ordersList) {
+                ordersList.innerHTML = userPurchases.map(purchase => {
+                    const product = purchase.product;
+                    const purchaseDate = new Date(purchase.purchased_at).toLocaleDateString('en-US', { 
+                        year: 'numeric', 
+                        month: 'short', 
+                        day: 'numeric' 
+                    });
+                    const amount = parseFloat(purchase.amount_paid || 0);
+                    return `
+                        <div class="order-item">
+                            <div>
+                                <strong>${product?.name || 'Product'}</strong>
+                                <div class="order-meta">Reference: ${purchase.transaction_reference || 'N/A'}</div>
+                            </div>
+                            <div class="order-meta">${purchaseDate}</div>
+                            <div class="order-meta">$${Number.isFinite(amount) ? amount.toFixed(0) : '0'}</div>
+                            <div class="order-status">Confirmed</div>
+                        </div>
+                    `;
+                }).join('');
+            }
         }
 
         // Load stats
@@ -756,15 +1002,8 @@
                 const activeEAs = userPurchases.length;
                 document.querySelector('.stat-card:nth-child(1) .stat-value').textContent = activeEAs;
 
-                // Get premium tutorial access
-                const { data: userData } = await supabase
-                    .from('users')
-                    .select('is_premium_member')
-                    .eq('id', currentUser.id)
-                    .single();
-
                 // Count tutorials (free + premium if user has access)
-                const tutorialsWatched = userData?.is_premium_member ? 24 : 6;
+                const tutorialsWatched = isPremiumMember ? 24 : 6;
                 document.querySelector('.stat-card:nth-child(2) .stat-value').textContent = tutorialsWatched;
 
                 // Calculate total investment
@@ -789,6 +1028,46 @@
             } catch (error) {
                 console.error('Error loading stats:', error);
             }
+        }
+
+        const settingsForm = document.getElementById('settingsForm');
+        if (settingsForm) {
+            settingsForm.addEventListener('submit', async (event) => {
+                event.preventDefault();
+                if (!currentUser) return;
+
+                const nameInput = document.getElementById('profileName');
+                const phoneInput = document.getElementById('profilePhone');
+                const submitButton = settingsForm.querySelector('button[type="submit"]');
+                const originalText = submitButton.textContent;
+
+                submitButton.textContent = 'Saving...';
+                submitButton.disabled = true;
+
+                try {
+                    const updates = {
+                        full_name: nameInput?.value?.trim() || null,
+                        phone_number: phoneInput?.value?.trim() || null,
+                        updated_at: new Date().toISOString()
+                    };
+
+                    const { error } = await supabase
+                        .from('users')
+                        .update(updates)
+                        .eq('id', currentUser.id);
+
+                    if (error) throw error;
+
+                    applyUserProfile(updates.full_name || getFallbackUserName(), isPremiumMember);
+                    alert('Profile updated successfully.');
+                } catch (error) {
+                    console.error('Profile update error:', error);
+                    alert('Failed to update profile. Please try again.');
+                } finally {
+                    submitButton.textContent = originalText;
+                    submitButton.disabled = false;
+                }
+            });
         }
 
         // Logout function
