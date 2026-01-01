@@ -476,7 +476,7 @@
                 <div class="stat-card">
                     <div class="stat-header">
                         <div>
-                            <div class="stat-value">3</div>
+                            <div class="stat-value">0</div>
                             <div class="stat-label">Active EAs</div>
                         </div>
                         <div class="stat-icon">🤖</div>
@@ -485,7 +485,7 @@
                 <div class="stat-card">
                     <div class="stat-header">
                         <div>
-                            <div class="stat-value">24</div>
+                            <div class="stat-value">0</div>
                             <div class="stat-label">Tutorials Watched</div>
                         </div>
                         <div class="stat-icon">📚</div>
@@ -494,7 +494,7 @@
                 <div class="stat-card">
                     <div class="stat-header">
                         <div>
-                            <div class="stat-value">$897</div>
+                            <div class="stat-value">$0</div>
                             <div class="stat-label">Total Investment</div>
                         </div>
                         <div class="stat-icon">💰</div>
@@ -503,7 +503,7 @@
                 <div class="stat-card">
                     <div class="stat-header">
                         <div>
-                            <div class="stat-value">45</div>
+                            <div class="stat-value">0</div>
                             <div class="stat-label">Days Active</div>
                         </div>
                         <div class="stat-icon">📈</div>
@@ -519,52 +519,10 @@
                 </div>
 
                 <div class="ea-list">
-                    <div class="ea-item">
-                        <div class="ea-icon">⚡</div>
-                        <div class="ea-details">
-                            <h3>Scalper Pro EA</h3>
-                            <p>High-frequency trading system for major currency pairs</p>
-                            <div class="ea-meta">
-                                <span class="ea-badge">Active License</span>
-                                <span style="color: var(--text-light); font-size: 0.9rem;">Purchased: Dec 15, 2024</span>
-                            </div>
-                        </div>
-                        <div class="ea-actions">
-                            <a href="#" class="action-button primary" onclick="downloadEA('Scalper Pro EA')">📥 Download</a>
-                            <a href="#" class="action-button secondary">📖 View Docs</a>
-                        </div>
-                    </div>
-
-                    <div class="ea-item">
-                        <div class="ea-icon">📈</div>
-                        <div class="ea-details">
-                            <h3>Trend Master EA</h3>
-                            <p>Intelligent trend-following algorithm with adaptive management</p>
-                            <div class="ea-meta">
-                                <span class="ea-badge">Active License</span>
-                                <span style="color: var(--text-light); font-size: 0.9rem;">Purchased: Dec 20, 2024</span>
-                            </div>
-                        </div>
-                        <div class="ea-actions">
-                            <a href="#" class="action-button primary" onclick="downloadEA('Trend Master EA')">📥 Download</a>
-                            <a href="#" class="action-button secondary">📖 View Docs</a>
-                        </div>
-                    </div>
-
-                    <div class="ea-item">
-                        <div class="ea-icon">🔷</div>
-                        <div class="ea-details">
-                            <h3>Grid Trader EA</h3>
-                            <p>Advanced grid trading system with smart recovery</p>
-                            <div class="ea-meta">
-                                <span class="ea-badge warning">Update Available</span>
-                                <span style="color: var(--text-light); font-size: 0.9rem;">Purchased: Dec 10, 2024</span>
-                            </div>
-                        </div>
-                        <div class="ea-actions">
-                            <a href="#" class="action-button primary" onclick="downloadEA('Grid Trader EA')">📥 Download</a>
-                            <a href="#" class="action-button secondary">📖 View Docs</a>
-                        </div>
+                    <div class="empty-state">
+                        <div class="empty-state-icon">⏳</div>
+                        <h3>Loading your purchases...</h3>
+                        <p>We'll only show paid and confirmed products here.</p>
                     </div>
                 </div>
             </section>
@@ -624,6 +582,20 @@
         let currentUser = null;
         let userPurchases = [];
 
+        function setStatValue(index, value) {
+            const statEl = document.querySelector(`.stat-card:nth-child(${index}) .stat-value`);
+            if (statEl) {
+                statEl.textContent = value;
+            }
+        }
+
+        function resetDashboardStats() {
+            setStatValue(1, '0');
+            setStatValue(2, '0');
+            setStatValue(3, '$0');
+            setStatValue(4, '0');
+        }
+
         // Check authentication and load user data
         async function initDashboard() {
             // Wait for Supabase to be ready
@@ -646,6 +618,7 @@
                 }
 
             currentUser = session.user;
+            resetDashboardStats();
             
             // Load user profile
             await loadUserProfile();
@@ -705,12 +678,11 @@
                         product:products(*)
                     `)
                     .eq('user_id', currentUser.id)
-                    .eq('payment_status', 'completed')
                     .order('purchased_at', { ascending: false });
 
                 if (error) throw error;
 
-                userPurchases = data || [];
+                userPurchases = (data || []).filter(purchase => purchase.payment_status === 'completed');
                 displayPurchases();
 
             } catch (error) {
@@ -781,7 +753,10 @@
                 document.querySelector('.stat-card:nth-child(2) .stat-value').textContent = tutorialsWatched;
 
                 // Calculate total investment
-                const totalInvestment = userPurchases.reduce((sum, p) => sum + parseFloat(p.amount_paid), 0);
+                const totalInvestment = userPurchases.reduce((sum, p) => {
+                    const amount = parseFloat(p.amount_paid);
+                    return sum + (Number.isFinite(amount) ? amount : 0);
+                }, 0);
                 document.querySelector('.stat-card:nth-child(3) .stat-value').textContent = '$' + totalInvestment.toFixed(0);
 
                 // Calculate days active
@@ -814,6 +789,22 @@
             if (event) event.preventDefault();
             
             try {
+                const { data: purchase, error: purchaseError } = await supabase
+                    .from('purchases')
+                    .select('id, download_count, payment_status')
+                    .eq('user_id', currentUser.id)
+                    .eq('product_id', productId)
+                    .order('purchased_at', { ascending: false })
+                    .limit(1)
+                    .maybeSingle();
+
+                if (purchaseError) throw purchaseError;
+
+                if (!purchase || purchase.payment_status !== 'completed') {
+                    alert('Access restricted. Please complete payment before downloading this product.');
+                    return;
+                }
+
                 // Log the download
                 const { error: logError } = await supabase
                     .from('download_logs')
@@ -823,16 +814,13 @@
                     });
 
                 // Update download count
-                const purchase = userPurchases.find(p => p.product_id === productId);
-                if (purchase) {
-                    await supabase
-                        .from('purchases')
-                        .update({ 
-                            download_count: purchase.download_count + 1,
-                            last_downloaded_at: new Date().toISOString()
-                        })
-                        .eq('id', purchase.id);
-                }
+                await supabase
+                    .from('purchases')
+                    .update({ 
+                        download_count: (purchase.download_count || 0) + 1,
+                        last_downloaded_at: new Date().toISOString()
+                    })
+                    .eq('id', purchase.id);
 
                 alert(`Downloading ${eaName}...\n\nIn production, this would:\n• Generate a secure download link\n• Start the file download\n• Provide installation instructions`);
                 
